@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               I18N-Langinfo-Wide
-version:            1
+version:            2
 abstract:           Langinfo and POSIX functions with wide-char strings.
 author:
     - Kevin Ryde <user42@zip.com.au>
@@ -11,7 +11,8 @@ configure_requires:
 build_requires:
     ExtUtils::MakeMaker:  0
 requires:
-    perl:  5.008001
+    Encode:  2.25
+    perl:    5.008001
 resources:
     homepage:  http://user42.tuxfamily.org/i18n-langinfo-wide/index.html
     license:   http://www.gnu.org/licenses/gpl.html

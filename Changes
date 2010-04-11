@@ -17,5 +17,8 @@ with I18N-Langinfo-Wide.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
+Version 2, April 2010
+    - Encode::resolve_alias() to handle "646" from netbsd
+
 Version 1, April 2010
     - the first version

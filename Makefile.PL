@@ -29,6 +29,8 @@ MyMakeMakerExtras::WriteMakefile
    ABSTRACT     => 'Langinfo and POSIX functions with wide-char strings.',
    VERSION_FROM => 'lib/I18N/Langinfo/Wide.pm',
    PREREQ_PM    => {
+                    # version 2.25 for Encode::Alias recognise "646" on netbsd
+                    Encode => '2.25',
                    },
    AUTHOR       => 'Kevin Ryde <user42@zip.com.au>',
    LICENSE      => 'gpl',

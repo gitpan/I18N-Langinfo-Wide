@@ -18,7 +18,7 @@
 use 5.008;
 use strict;
 use warnings;
-use Test::More tests => 40;
+use Test::More tests => 44;
 
 BEGIN {
  SKIP: { eval 'use Test::NoWarnings; 1'
@@ -27,13 +27,22 @@ BEGIN {
 
 require POSIX::Wide;
 
-my $want_version = 1;
+my $want_version = 2;
 is ($POSIX::Wide::VERSION, $want_version, 'VERSION variable');
 is (POSIX::Wide->VERSION,  $want_version, 'VERSION class method');
 { ok (eval { POSIX::Wide->VERSION($want_version); 1 },
       "VERSION class check $want_version");
   my $check_version = $want_version + 1000;
   ok (! eval { POSIX::Wide->VERSION($check_version); 1 },
+      "VERSION class check $check_version");
+}
+
+is ($POSIX::Wide::ERRNO::VERSION, $want_version, 'VERSION variable');
+is (POSIX::Wide::ERRNO->VERSION,  $want_version, 'VERSION class method');
+{ ok (eval { POSIX::Wide::ERRNO->VERSION($want_version); 1 },
+      "VERSION class check $want_version");
+  my $check_version = $want_version + 1000;
+  ok (! eval { POSIX::Wide::ERRNO->VERSION($check_version); 1 },
       "VERSION class check $check_version");
 }
 

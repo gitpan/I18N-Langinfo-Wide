@@ -19,10 +19,12 @@ package I18N::Langinfo::Wide;
 use 5.008001;
 use strict;
 use warnings;
-use Encode;
 use I18N::Langinfo ();
 
-our $VERSION = 1;
+# version 2.25 for Encode::Alias recognise "646" on netbsd
+use Encode 2.25;
+
+our $VERSION = 2;
 
 use Exporter;
 our @ISA = ('Exporter');
@@ -73,7 +75,13 @@ sub langinfo {
 sub to_wide {
   my ($str) = @_;
   if (utf8::is_utf8($str)) { return $str; }
-  return Encode::decode (I18N::Langinfo::langinfo(I18N::Langinfo::CODESET()),
+
+  # netbsd langinfo(CODESET) returns "646" meaning ISO-646, ie. ASCII.  Must
+  # put that through resolve_alias() to turn it into "ascii".
+  #
+  return Encode::decode (Encode::resolve_alias
+                         (I18N::Langinfo::langinfo
+                          (I18N::Langinfo::CODESET())),
                          $str, Encode::FB_CROAK());
 }
 

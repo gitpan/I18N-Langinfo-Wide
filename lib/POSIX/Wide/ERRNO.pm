@@ -26,7 +26,7 @@ use Scalar::Util;
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-our $VERSION = 1;
+our $VERSION = 2;
 
 sub TIESCALAR {
   my ($class) = @_;
@@ -43,21 +43,21 @@ BEGIN {
            my $e = Scalar::Util::dualvar(0,$u);
            utf8::is_utf8($e) }) {
     ### dualvar() is utf8
-    eval <<'HERE'
+    eval <<'HERE';
       sub FETCH {
         return Scalar::Util::dualvar ($!, I18N::Langinfo::Wide::to_wide("$!"));
       }
 HERE
-    } else {
+  } else {
     ### dualvar() is not utf8, using _utf8_on()
-    eval <<'HERE'
+    eval <<'HERE';
       sub FETCH {
         my $e = Scalar::Util::dualvar ($!, I18N::Langinfo::Wide::to_wide("$!"));
         Encode::_utf8_on($e);
         return $e;
       }
 HERE
-    }
+  }
 }
 
 sub STORE {

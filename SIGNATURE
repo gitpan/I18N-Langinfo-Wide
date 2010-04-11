@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.61.
+signed via the Module::Signature module, version 0.63.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -15,13 +15,13 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 842745cb706f8f2126506f544492f7a80dbe29b3 COPYING
-SHA1 df00dfbd2b3e812704b996252cf2570ec0c47ced Changes
+SHA1 e41ec65e967b75b8587d9a9459265786796917c9 Changes
 SHA1 fa5bfeaec3b493ae7faafa55b2d607200bf8deb6 MANIFEST
 SHA1 e617c70ed81c4c1ef71318726b4eef701701979f MANIFEST.SKIP
-SHA1 f39803ac869e1de64905664423abae6a70402ead META.yml
-SHA1 b05681b61efbcf7aa43f06be9da82dd77d5c27af Makefile.PL
+SHA1 9be090710fdac198e64f935bf41cfef578c33164 META.yml
+SHA1 acdf6a09531e0963547cc0c98ebbd7ee5d258f85 Makefile.PL
 SHA1 c6a301a912d7fabc8dcbb9d976ed7085dc90b360 README
-SHA1 a04f1513e00f70ce787cd4807a5561e04e7d97f7 debian/changelog
+SHA1 9821683e94039c2d214e2ba89fa98487f5e99810 debian/changelog
 SHA1 ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4 debian/compat
 SHA1 21b557368d48a605949d90f7f86bb5b9755afa0d debian/control
 SHA1 5937be4c2c2a017507e1bdcfe0d30c32e21457bd debian/copyright
@@ -29,23 +29,23 @@ SHA1 2bd69eb0880e9f21a3fbfbf2b24707466b60d0ec debian/rules
 SHA1 61652cd1568dcf2614df833eba241755eee34e89 debian/source/format
 SHA1 1e7b60bb454cff3f60f5e210bc1fb4105ccc1688 debian/watch
 SHA1 f27080a43f9bee405f97c6b83eab8eb0e8b8f50e devel/check-categories.pl
-SHA1 bf98bda290a562911bb415e78ac868b3038d546a devel/funcs.pl
+SHA1 ab524400b87a4a5c7354e7f7e8623f63b1add21e devel/funcs.pl
 SHA1 e3c90f1eab8bec8048c0d5ab9f41d06023e54f6a inc/MyMakeMakerExtras.pm
 SHA1 63427b66eb26f013f10c835b0cf320c93361f310 inc/my_pod2html
-SHA1 ad929a328dfa0e7e7b1fe8127acc6db2e71116b3 lib/I18N/Langinfo/Wide.pm
-SHA1 a9dab61e6695c6e35d9c52b0a0779abe3f53f6fc lib/POSIX/Wide.pm
-SHA1 f70c310823c7583695ac2bde5a6df2f1f97c78a0 lib/POSIX/Wide/ERRNO.pm
+SHA1 3f9674efbcf801f667ba1a718de3860f0d1e2f1a lib/I18N/Langinfo/Wide.pm
+SHA1 c236df51ddb90e62a4a286e496169aef0802e0cd lib/POSIX/Wide.pm
+SHA1 d4a4eda18577d3f4ca757e0e534cc7b46c576775 lib/POSIX/Wide/ERRNO.pm
 SHA1 11eda0347af48309996833a4da214197e31b85fb t/0-META-read.t
 SHA1 a343ed4dce96d05de51eed1ec065911584b96fce t/0-Test-DistManifest.t
 SHA1 bba0dc087cbe64d8f100ab77e6cef061c0bebf27 t/0-Test-Pod.t
 SHA1 5fa94e1e88e44064d1e6b21c88a4c9374a17bfd1 t/0-Test-Synopsis.t
 SHA1 9a19fa262c1cc6ee6afe638600ce880500a91946 t/0-Test-YAML-Meta.t
-SHA1 44183e053fe7222ee8ed54b0c91223aa8cbe3e79 t/I18N-Langinfo-Wide.t
-SHA1 325a92acb0ce1c745889787344311b22fc4c50ce t/POSIX-Wide.t
+SHA1 eeca88219204fc1ca3b8bf5e2d2a42b65ead3c50 t/I18N-Langinfo-Wide.t
+SHA1 f19915f3d45edb7c7b84bc9292c82c2359f287d7 t/POSIX-Wide.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iD8DBQFLv7KiLFMCIV9q3ToRAvxSAKCr1ls3On/Q1ltoPGq/0HbZYctibQCgsBN7
-XQ4Zy7GUSfebIGh1HNbGLio=
-=l0VV
+iD8DBQFLwlPALFMCIV9q3ToRAi8uAKCcPK/1R4+lIr+fuxVBMkyqy/LLigCeKNOy
+DtK6vAKByF0UIr0uN/ugz2w=
+=cav/
 -----END PGP SIGNATURE-----
