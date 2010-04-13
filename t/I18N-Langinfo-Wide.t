@@ -27,7 +27,7 @@ BEGIN {
 
 require I18N::Langinfo::Wide;
 
-my $want_version = 2;
+my $want_version = 3;
 is ($I18N::Langinfo::Wide::VERSION, $want_version, 'VERSION variable');
 is (I18N::Langinfo::Wide->VERSION,  $want_version, 'VERSION class method');
 { ok (eval { I18N::Langinfo::Wide->VERSION($want_version); 1 },
@@ -42,27 +42,43 @@ my @itemnames = grep {/^[A-Z_]/} @I18N::Langinfo::EXPORT_OK;
 diag "items: ", join(' ',@itemnames);
 cmp_ok (@itemnames, '!=', 0, 'itemnames found');
 
+diag "_byte items count: ", scalar(@{[values %I18N::Langinfo::Wide::_byte]});
+# diag explain \%I18N::Langinfo::Wide::_byte;
+
+# The constants in @EXPORT_OK are not always actually available on the
+# system.  If not then the subr croaks.
 sub itemname_to_item {
   my ($itemname) = @_;
   my $itemfullname = "I18N::Langinfo::$itemname";
-  no strict 'refs';
-  return &$itemfullname();
+  my $coderef = \&$itemfullname;
+  return eval { &$coderef() };
 }
 
 {
   my $good = 1;
   foreach my $itemname (@itemnames) {
     my $item = itemname_to_item ($itemname);
+    if (! defined $item) {
+      diag "$itemname not available: $@";
+      next;
+    }
     my $value = I18N::Langinfo::Wide::langinfo ($item);
 
-    if (! utf8::is_utf8 ($value)) {
-      diag "$itemname not utf8::is_utf8";
-      $good = 0;
-    }
+    if (exists $I18N::Langinfo::Wide::_byte{$item}) {
+      if (utf8::is_utf8 ($value)) {
+        diag "$itemname should not be utf8::is_utf8()";
+        $good = 0;
+      }
 
-    if (defined &utf8::valid && ! utf8::valid ($value)) {
-      diag "$itemname not utf8::valid";
-      $good = 0;
+    } else {
+      if (! utf8::is_utf8 ($value)) {
+        diag "$itemname not utf8::is_utf8()";
+        $good = 0;
+      }
+      if (defined &utf8::valid && ! utf8::valid ($value)) {
+        diag "$itemname not utf8::valid()";
+        $good = 0;
+      }
     }
   }
   ok ($good, (scalar @itemnames) . ' values');

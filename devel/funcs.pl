@@ -21,6 +21,23 @@ use strict;
 use warnings;
 
 {
+  require POSIX;
+  POSIX::setlocale (POSIX::LC_ALL(), 'ja_JP');
+
+  require I18N::Langinfo;
+  print "ALT_DIGITS defined: ",defined(&I18N::Langinfo::ALT_DIGITS)?"yes":"no","\n";
+  print "can('ALT_DIGITS'): ",I18N::Langinfo->can('ALT_DIGITS')?"yes":"no","\n";
+  print "call ALT_DIGITS: ",I18N::Langinfo::ALT_DIGITS(),"\n";
+  print "langinfo(ALT_DIGITS): '",I18N::Langinfo::langinfo(I18N::Langinfo::ALT_DIGITS()),"'\n";
+  print "langinfo(ERA): '",I18N::Langinfo::langinfo(I18N::Langinfo::ERA()),"'\n";
+
+
+#   $_ = I18N::Langinfo::ABDAY_1();
+#   print I18N::Langinfo::langinfo(),"\n";
+  exit 0;
+}
+
+{
   require Encode;
   foreach (Encode->encodings(':all')) { print; print "\n"; }
 

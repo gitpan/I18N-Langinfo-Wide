@@ -24,7 +24,7 @@ use I18N::Langinfo ();
 # version 2.25 for Encode::Alias recognise "646" on netbsd
 use Encode 2.25;
 
-our $VERSION = 2;
+our $VERSION = 3;
 
 use Exporter;
 our @ISA = ('Exporter');
@@ -38,28 +38,29 @@ our @EXPORT_OK = qw(langinfo to_wide);
 # character strings.  The binary ones like GROUPING or P_CS_PRECEDES are not
 # offered.  (glibc categories.def sets out which is what.)
 #
-# exists $_byte{key} means a byte string
+# exists $_byte{$key_integer} means a byte string
 our %_byte;
 BEGIN {
   @_byte{ # hash slice
-    grep {defined(eval "I18N::Langinfo::$_()")}
-      qw(GROUPING
-         MON_GROUPING
-         FRAC_DIGITS
-         INT_FRAC_DIGITS
-         P_CS_PRECEDES
-         P_SEP_BY_SPACE
-         N_CS_PRECEDES
-         N_SEP_BY_SPACE
-         P_SIGN_POSN
-         N_SIGN_POSN
-         INT_P_CS_PRECEDES
-         INT_P_SEP_BY_SPACE
-         INT_N_CS_PRECEDES
-         INT_N_SEP_BY_SPACE
-         INT_P_SIGN_POSN
-         INT_N_SIGN_POSN)
-    } = ();
+    grep {defined}
+      map {eval "I18N::Langinfo::$_()"}
+        qw(GROUPING
+           MON_GROUPING
+           FRAC_DIGITS
+           INT_FRAC_DIGITS
+           P_CS_PRECEDES
+           P_SEP_BY_SPACE
+           N_CS_PRECEDES
+           N_SEP_BY_SPACE
+           P_SIGN_POSN
+           N_SIGN_POSN
+           INT_P_CS_PRECEDES
+           INT_P_SEP_BY_SPACE
+           INT_N_CS_PRECEDES
+           INT_N_SEP_BY_SPACE
+           INT_P_SIGN_POSN
+           INT_N_SIGN_POSN)
+      } = ();
 }
 
 sub langinfo {
@@ -139,6 +140,14 @@ then it's assumed be in the current locale charset per C<langinfo(CODESET)>.
 If C<$str> is already wide chars then it's returned unchanged,
 
 =back
+
+=head1 BUGS
+
+In the GNU C Library 2.10.1, C<langinfo> on C<ALT_DIGITS> or C<ERA> returns
+only the first digit or first era.  This is a bug in the C library which
+neither C<I18N::Langinfo> nor C<I18N::Langinfo::Wide> attempt to address.
+(C<nl_langinfo> returns nulls C<\0> between the characters or eras, where
+the POSIX spec calls for semicolons.)
 
 =head1 SEE ALSO
 
