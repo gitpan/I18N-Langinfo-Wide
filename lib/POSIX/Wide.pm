@@ -23,7 +23,7 @@ use POSIX ();
 use Encode;
 use I18N::Langinfo::Wide 'to_wide';
 
-our $VERSION = 3;
+our $VERSION = 4;
 
 use Exporter;
 our @ISA = ('Exporter');

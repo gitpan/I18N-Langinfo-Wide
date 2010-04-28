@@ -26,7 +26,7 @@ use Scalar::Util;
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-our $VERSION = 3;
+our $VERSION = 4;
 
 sub TIESCALAR {
   my ($class) = @_;

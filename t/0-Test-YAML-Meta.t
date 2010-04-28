@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
 # 0-Test-YAML-Meta.t -- run Test::YAML::Meta if available
 

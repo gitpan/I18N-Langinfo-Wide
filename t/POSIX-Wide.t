@@ -27,7 +27,7 @@ BEGIN {
 
 require POSIX::Wide;
 
-my $want_version = 3;
+my $want_version = 4;
 is ($POSIX::Wide::VERSION, $want_version, 'VERSION variable');
 is (POSIX::Wide->VERSION,  $want_version, 'VERSION class method');
 { ok (eval { POSIX::Wide->VERSION($want_version); 1 },

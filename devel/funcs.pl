@@ -20,6 +20,19 @@
 use strict;
 use warnings;
 
+sub tzname {
+  return map {to_wide($_)} POSIX::tzname();
+}
+
+{
+  require POSIX;
+  $ENV{'TZ'} = 'EST+10EDT';
+  POSIX::tzset();
+  print "scalar ", scalar(POSIX::tzname()), "\n";
+  print "list   ", POSIX::tzname(), "\n";
+  exit 0;
+}
+
 {
   require POSIX;
   POSIX::setlocale (POSIX::LC_ALL(), 'ja_JP');

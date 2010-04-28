@@ -30,7 +30,10 @@ MyMakeMakerExtras::WriteMakefile
    VERSION_FROM => 'lib/I18N/Langinfo/Wide.pm',
    PREREQ_PM    => {
                     # version 2.25 for Encode::Alias recognise "646" on netbsd
-                    Encode => '2.25',
+                    'Encode' => '2.25',
+
+                    # perhaps not supplied by default on msdos ...
+                    'I18N::Langinfo' => 0,
                    },
    AUTHOR       => 'Kevin Ryde <user42@zip.com.au>',
    LICENSE      => 'gpl',

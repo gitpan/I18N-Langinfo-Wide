@@ -24,7 +24,7 @@ use I18N::Langinfo ();
 # version 2.25 for Encode::Alias recognise "646" on netbsd
 use Encode 2.25;
 
-our $VERSION = 3;
+our $VERSION = 4;
 
 use Exporter;
 our @ISA = ('Exporter');
