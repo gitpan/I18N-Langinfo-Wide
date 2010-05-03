@@ -23,11 +23,11 @@ use POSIX ();
 use Encode;
 use I18N::Langinfo::Wide 'to_wide';
 
-our $VERSION = 4;
+our $VERSION = 5;
 
 use Exporter;
 our @ISA = ('Exporter');
-our @EXPORT_OK = qw(localeconv perror strerror strftime $ERRNO);
+our @EXPORT_OK = qw(localeconv perror strerror strftime tzname $ERRNO);
 
 # not yet ...
 # our %EXPORT_TAGS = (all => \@EXPORT_OK);
@@ -37,13 +37,9 @@ tie (our $ERRNO, 'POSIX::Wide::ERRNO');
 
 
 # Possible funcs:
-#
 #   asctime
 #   ctime
 #       Believe always ascii day/month, or at least that's what glibc gives.
-#
-# Not sure:
-#   tzname - always ascii?
 #
 # Different:
 #   strcoll
@@ -88,6 +84,10 @@ sub strftime {
   (my $fmt = shift) =~ s{(%[\020-\176\t\n\r\f\a]*)}
                         { to_wide(POSIX::strftime($1,@_)) }ge;
   return $fmt;
+}
+
+sub tzname {
+  return map {to_wide($_)} POSIX::tzname();
 }
 
 
@@ -153,6 +153,16 @@ strings.
 The current implementation passes ASCII parts of C<$format>, including the
 "%" formatting directives, to strftime().  This means C<$format> can include
 characters which might not exist in the locale charset.
+
+=item C<($std_name, $dst_name) = POSIX::Wide::tzname ()>
+
+Return the C<tzname[]> strings for standard time and daylight savings time
+as wide char strings.
+
+The POSIX spec is that these should only have characters from the "portable
+character set", so normally the bytes of plain C<POSIX::tzname> should
+suffice.  C<POSIX::Wide::tzname> can be used if someone might get creative
+with a C<TZ> setting.
 
 =item C<$num = $POSIX::Wide::ERRNO + 0>
 

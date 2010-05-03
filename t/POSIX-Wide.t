@@ -18,7 +18,7 @@
 use 5.008;
 use strict;
 use warnings;
-use Test::More tests => 44;
+use Test::More tests => 48;
 
 BEGIN {
  SKIP: { eval 'use Test::NoWarnings; 1'
@@ -27,7 +27,7 @@ BEGIN {
 
 require POSIX::Wide;
 
-my $want_version = 4;
+my $want_version = 5;
 is ($POSIX::Wide::VERSION, $want_version, 'VERSION variable');
 is (POSIX::Wide->VERSION,  $want_version, 'VERSION class method');
 { ok (eval { POSIX::Wide->VERSION($want_version); 1 },
@@ -48,9 +48,13 @@ is (POSIX::Wide::ERRNO->VERSION,  $want_version, 'VERSION class method');
 
 sub my_printable_string {
   my ($str) = @_;
-  $str =~ s{([^[:ascii:]]|[^[:print:]])}
-           { sprintf('\x{%X}',ord($1)) }eg;
-  return $str;
+  if (! defined $str) {
+    return '[undef]';
+  } else {
+    $str =~ s{([^[:ascii:]]|[^[:print:]])}
+             { sprintf('\x{%X}',ord($1)) }eg;
+    return $str;
+  }
 }
 
 #------------------------------------------------------------------------------
@@ -174,6 +178,24 @@ my %localeconv_is_binary = (frac_digits     => 1, # number
     is ($got, $want, "format: ".my_printable_string($format));
     ok (wide_chars_valid($got),
         "check wide chars from format: ".my_printable_string($format));
+  }
+}
+
+#------------------------------------------------------------------------------
+# tzname()
+
+{
+  my ($std, $dst) = POSIX::Wide::tzname ();
+  diag "tzname std ".my_printable_string($std);
+  diag "tzname dst ".my_printable_string($dst);
+  ok (utf8::is_utf8($std), "tzname() std is_utf8");
+  ok (! defined $dst || utf8::is_utf8($dst),
+      "tzname() dst is_utf8");
+ SKIP: {
+    (defined &utf8::valid)
+      or skip 'utf8::valid not available', 1;
+    ok (utf8::valid($std), "tzname std utf8::valid");
+    ok (! defined $dst || utf8::valid($dst), "tzname dst utf8::valid");
   }
 }
 

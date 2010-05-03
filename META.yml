@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               I18N-Langinfo-Wide
-version:            4
+version:            5
 abstract:           Langinfo and POSIX functions with wide-char strings.
 author:
     - Kevin Ryde <user42@zip.com.au>

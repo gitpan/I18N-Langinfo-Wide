@@ -17,6 +17,9 @@ with I18N-Langinfo-Wide.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
+Version 5, May 2010
+    - POSIX::Wide new tzname()
+
 Version 4, April 2010
     - Makefile.PL express dependency on I18N::Langinfo
 

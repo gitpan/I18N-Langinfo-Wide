@@ -20,10 +20,6 @@
 use strict;
 use warnings;
 
-sub tzname {
-  return map {to_wide($_)} POSIX::tzname();
-}
-
 {
   require POSIX;
   $ENV{'TZ'} = 'EST+10EDT';
