@@ -1,3 +1,5 @@
+#!/usr/bin/perl -w
+
 # Copyright 2009, 2010 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
@@ -18,16 +20,15 @@
 use 5.008;
 use strict;
 use warnings;
-use Test::More tests => 48;
+use Test::More tests => 50;
 
-BEGIN {
- SKIP: { eval 'use Test::NoWarnings; 1'
-           or skip 'Test::NoWarnings not available', 1; }
-}
+use lib 't';
+use MyTestHelpers;
+MyTestHelpers::nowarnings();
 
 require POSIX::Wide;
 
-my $want_version = 5;
+my $want_version = 6;
 is ($POSIX::Wide::VERSION, $want_version, 'VERSION variable');
 is (POSIX::Wide->VERSION,  $want_version, 'VERSION class method');
 { ok (eval { POSIX::Wide->VERSION($want_version); 1 },
@@ -214,6 +215,25 @@ my %localeconv_is_binary = (frac_digits     => 1, # number
       or skip 'utf8::valid not available', 1;
 
     ok (utf8::valid($str), 'ERRNO string utf8::valid');
+  }
+}
+
+#------------------------------------------------------------------------------
+# $EXTENDED_OS_ERROR
+
+{
+  my $want_num = $^E + 0;
+  my $want_str = "$^E";
+  my $got_num = $POSIX::Wide::EXTENDED_OS_ERROR + 0;
+  my $got_str = "$POSIX::Wide::EXTENDED_OS_ERROR";
+  is ($got_num, $want_num,     'EXTENDED_OS_ERROR number');
+  ok (utf8::is_utf8($got_str), 'EXTENDED_OS_ERROR string is_utf8');
+
+ SKIP: {
+    (defined &utf8::valid)
+      or skip 'utf8::valid not available', 1;
+
+    ok (utf8::valid($got_str), 'EXTENDED_OS_ERROR string utf8::valid');
   }
 }
 

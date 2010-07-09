@@ -23,17 +23,21 @@ use POSIX ();
 use Encode;
 use I18N::Langinfo::Wide 'to_wide';
 
-our $VERSION = 5;
+our $VERSION = 6;
 
 use Exporter;
 our @ISA = ('Exporter');
-our @EXPORT_OK = qw(localeconv perror strerror strftime tzname $ERRNO);
+our @EXPORT_OK = qw(localeconv perror strerror strftime tzname
+                    $ERRNO $EXTENDED_OS_ERROR);
 
 # not yet ...
 # our %EXPORT_TAGS = (all => \@EXPORT_OK);
 
 use POSIX::Wide::ERRNO;
 tie (our $ERRNO, 'POSIX::Wide::ERRNO');
+
+use POSIX::Wide::EXTENDED_OS_ERROR;
+tie (our $EXTENDED_OS_ERROR, 'POSIX::Wide::EXTENDED_OS_ERROR');
 
 
 # Possible funcs:
@@ -94,6 +98,8 @@ sub tzname {
 1;
 __END__
 
+=for stopwords POSIX charset Eg funcs hashref errno MacOS VMS I18N-Langinfo-Wide Ryde
+
 =head1 NAME
 
 POSIX::Wide -- POSIX functions returning wide-char strings
@@ -107,17 +113,18 @@ POSIX::Wide -- POSIX functions returning wide-char strings
 =head1 DESCRIPTION
 
 This is a few of the C<POSIX> module functions adapted to return Perl
-wide-char strings instead of their usual locale charset byte strings.
+wide-char strings instead of locale charset byte strings.
 
 =head1 EXPORTS
 
 Nothing is exported by default, but each of the functions and the C<$ERRNO>
-variable can be imported in the usual C<Exporter> way.  Eg.
+and C<$EXTENDED_OS_ERROR> variables can be imported in usual C<Exporter>
+style.  Eg.
 
     use POSIX::Wide 'strftime', '$ERRNO';
 
-There's no C<:all> tag yet, as not sure if it would better import just the
-new funcs, or get everything from C<POSIX>.
+There's no C<:all> tag yet, as not sure if it would best import just the new
+funcs, or get everything from C<POSIX>.
 
 =head1 FUNCTIONS
 
@@ -131,13 +138,13 @@ Return a hashref of locale information
       grouping      => ...
     }
 
-String field values are wide chars.  Non-string fields like C<grouping> or
+Text field values are wide chars.  Non-text fields like C<grouping> and
 number fields like C<frac_digits> are unchanged.
 
 =item C<$str = POSIX::Wide::perror ($message)>
 
-Print C<$message> and errno C<$!> to C<STDERR>, with wide-chars for the
-errno string.
+Print C<$message> and errno string C<$!> to C<STDERR>, with wide-chars for
+the errno string.
 
     $message: $!\n
 
@@ -164,14 +171,42 @@ character set", so normally the bytes of plain C<POSIX::tzname> should
 suffice.  C<POSIX::Wide::tzname> can be used if someone might get creative
 with a C<TZ> setting.
 
+=back
+
+=head1 VARIABLES
+
+=over 4
+
 =item C<$num = $POSIX::Wide::ERRNO + 0>
 
 =item C<$str = "$POSIX::Wide::ERRNO">
 
-A magic dual-value variable similar to C<$!>, giving the C library C<errno>
-as a number or string.  The string is wide-chars.
+A magic dual-value variable which is C<$!> but giving the string form as
+wide-chars (see L<perlvar/$ERRNO>).
+
+=item C<$num = $POSIX::Wide::EXTENDED_OS_ERROR + 0>
+
+=item C<$str = "$POSIX::Wide::EXTENDED_OS_ERROR">
+
+A magic dual-value variable which is C<$^E> but giving the string form as
+wide-chars (see L<perlvar/$EXTENDED_OS_ERROR>).
+
+The current implementation assumes C<$^E> is locale bytes (if it isn't
+already wide).  This is true of POSIX but not absolutely sure for MacOS and
+VMS.
 
 =back
+
+=head1 WITH C<Errno::AnyString>
+
+Custom error strings set into C<$!> by C<Errno::AnyString> work with all of
+C<strerror>, C<perror> and C<$ERRNO> above, and custom error numbers
+registered with C<Errno::AnyString> can be accessed with C<strerror> too.
+
+If you use non-ASCII in such a string then it should be locale bytes the
+same as normal C<$!> strings.  If C<$!> is a wide character string then
+<POSIX::Wide> will return that unchanged (though whether wide strings from
+C<$!> would well with other code is another matter).
 
 =head1 SEE ALSO
 

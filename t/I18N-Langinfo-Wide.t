@@ -1,3 +1,5 @@
+#!/usr/bin/perl -w
+
 # Copyright 2009, 2010 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
@@ -18,16 +20,15 @@
 use 5.008;
 use strict;
 use warnings;
-use Test::More tests => 7;
+use Test::More tests => 6;
 
-BEGIN {
- SKIP: { eval 'use Test::NoWarnings; 1'
-           or skip 'Test::NoWarnings not available', 1; }
-}
+use lib 't';
+use MyTestHelpers;
+MyTestHelpers::nowarnings();
 
 require I18N::Langinfo::Wide;
 
-my $want_version = 5;
+my $want_version = 6;
 is ($I18N::Langinfo::Wide::VERSION, $want_version, 'VERSION variable');
 is (I18N::Langinfo::Wide->VERSION,  $want_version, 'VERSION class method');
 { ok (eval { I18N::Langinfo::Wide->VERSION($want_version); 1 },

@@ -24,7 +24,7 @@ use I18N::Langinfo ();
 # version 2.25 for Encode::Alias recognise "646" on netbsd
 use Encode 2.25;
 
-our $VERSION = 5;
+our $VERSION = 6;
 
 use Exporter;
 our @ISA = ('Exporter');
@@ -90,6 +90,8 @@ sub to_wide {
 1;
 __END__
 
+=for stopwords POSIX charset Eg funcs latin-1 ebcdic I18N-Langinfo-Wide Ryde
+
 =head1 NAME
 
 I18N::Langinfo::Wide -- POSIX functions returning wide-char strings
@@ -137,7 +139,7 @@ byte ones as bytes.
 
 Return C<$str> converted to a wide-char string.  If C<$str> is a byte string
 then it's assumed be in the current locale charset per C<langinfo(CODESET)>.
-If C<$str> is already wide chars then it's returned unchanged,
+If C<$str> is already wide chars then it's returned unchanged.
 
 =back
 

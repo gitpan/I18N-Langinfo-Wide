@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License along
 # with I18N-Langinfo-Wide.  If not, see <http://www.gnu.org/licenses/>.
 
-package POSIX::Wide::ERRNO;
+package POSIX::Wide::EXTENDED_OS_ERROR;
 use 5.008001;  # for utf8::is_utf8()
 use strict;
 use warnings;
@@ -36,6 +36,16 @@ sub TIESCALAR {
 # dualvar() in Scalar::Util 1.22 (post perl 5.10.1) will propagate the
 # utf8 flag on its own, for prior versions must turn it on explicitly
 #
+# $^E fetching in Perl_magic_get():
+#
+#     $^E on MacOS is GetSysErrText.  Is that mac-roman maybe?
+#
+#     $^E on VMS is sys$getmsg.  Is that the selected NLS thingie?
+#
+#     $^E on ms-dos is GetLastError.
+#
+#     $^E on OS2 is DosGetMessage or OSO001.MSG.
+#
 BEGIN {
   if (do { my $u = 'x';
            utf8::upgrade($u);
@@ -45,7 +55,7 @@ BEGIN {
     eval <<'HERE' or die;
       sub FETCH {
         return Scalar::Util::dualvar
-                 ($!, I18N::Langinfo::Wide::to_wide("$!"));
+                 ($^E, I18N::Langinfo::Wide::to_wide("$^E"));
       }
       1;
 HERE
@@ -55,7 +65,7 @@ HERE
     eval <<'HERE' or die;
       sub FETCH {
         my $e = Scalar::Util::dualvar
-                  ($!, I18N::Langinfo::Wide::to_wide("$!"));
+                  ($^E, I18N::Langinfo::Wide::to_wide("$^E"));
         Encode::_utf8_on($e);
         return $e;
       }
@@ -66,7 +76,7 @@ HERE
 
 sub STORE {
   my ($self, $value) = @_;
-  $! = $value;
+  $^E = $value;
 }
 
 1;

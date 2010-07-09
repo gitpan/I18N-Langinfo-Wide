@@ -20,12 +20,38 @@
 use strict;
 use warnings;
 
+
+
+
 {
+  $! = 9;
+  print $!,"\n";
   require POSIX;
-  $ENV{'TZ'} = 'EST+10EDT';
-  POSIX::tzset();
-  print "scalar ", scalar(POSIX::tzname()), "\n";
-  print "list   ", POSIX::tzname(), "\n";
+  delete $ENV{'LANGUAGE'}; # ='fr';
+  delete $ENV{'LC_ALL'};
+  delete $ENV{'LC_MESSAGES'};
+  delete $ENV{'LANG'};
+
+  print POSIX::setlocale(POSIX::LC_ALL(),'fr_FR'),"\n";
+  print POSIX::setlocale(POSIX::LC_MESSAGES(),'fr_FR'),"\n";
+  print POSIX::setlocale(POSIX::LC_MESSAGES()),"\n";
+
+#   foreach my $i (1 .. 100) {
+#     $! = $i;
+#     if ("$!" =~ /[^[:ascii:]]/) {
+#       print "$i\n";
+#     }
+#   }
+
+  print POSIX::strerror(4),"\n";
+  $! = 4;
+  my $ext = "$^E";
+  print $!,"\n";
+  print "$ext\n";
+  print "ext utf8 ",(utf8::is_utf8($ext)+0),"\n";
+
+#   require Locale::Messages;
+#   print Locale::Messages::dgettext('libc',"Bad file descriptor"),"\n";
   exit 0;
 }
 
@@ -47,6 +73,16 @@ use warnings;
 }
 
 {
+  require POSIX;
+  $ENV{'TZ'} = 'EST+10EDT';
+  POSIX::tzset();
+  print "scalar ", scalar(POSIX::tzname()), "\n";
+  print "list   ", POSIX::tzname(), "\n";
+  exit 0;
+}
+
+
+{
   require Encode;
   foreach (Encode->encodings(':all')) { print; print "\n"; }
 
@@ -59,7 +95,7 @@ use warnings;
   exit 0;
 }
 {
-  requrie POSIX;
+  require POSIX;
   print "perror defined: ",defined(&perror)?"yes":"no","\n";
   print "can('perror'): ",POSIX->can('perror')?"yes":"no","\n";
   $! = 3;
