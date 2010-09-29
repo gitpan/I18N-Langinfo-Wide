@@ -25,7 +25,7 @@ use Scalar::Util;
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-our $VERSION = 6;
+our $VERSION = 7;
 
 sub TIESCALAR {
   my ($class) = @_;
@@ -42,7 +42,7 @@ BEGIN {
            my $e = Scalar::Util::dualvar(0,$u);
            utf8::is_utf8($e) }) {
     ### dualvar() is utf8
-    eval <<'HERE' or die;
+    eval "#line ".(__LINE__+1)." \"".__FILE__."\"\n" . <<'HERE' or die;
       sub FETCH {
         return Scalar::Util::dualvar
                  ($!, I18N::Langinfo::Wide::to_wide("$!"));
@@ -52,7 +52,7 @@ HERE
   } else {
     ### dualvar() is not utf8, using _utf8_on()
     require Encode;
-    eval <<'HERE' or die;
+    eval "#line ".(__LINE__+1)." \"".__FILE__."\"\n" . <<'HERE' or die;
       sub FETCH {
         my $e = Scalar::Util::dualvar
                   ($!, I18N::Langinfo::Wide::to_wide("$!"));

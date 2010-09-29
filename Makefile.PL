@@ -45,12 +45,5 @@ MyMakeMakerExtras::WriteMakefile
         => { homepage
              => 'http://user42.tuxfamily.org/i18n-langinfo-wide/index.html',
            },
-        optional_features
-        => { maximum_tests
-             => { description => 'Have "make test" do as much as possible.',
-                  requires => { 'Test::NoWarnings' => 0,
-                              },
-                },
-           },
       },
   );

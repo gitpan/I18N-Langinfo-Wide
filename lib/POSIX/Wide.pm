@@ -23,7 +23,7 @@ use POSIX ();
 use Encode;
 use I18N::Langinfo::Wide 'to_wide';
 
-our $VERSION = 6;
+our $VERSION = 7;
 
 use Exporter;
 our @ISA = ('Exporter');
@@ -208,11 +208,18 @@ same as normal C<$!> strings.  If C<$!> is a wide character string then
 <POSIX::Wide> will return that unchanged (though whether wide strings from
 C<$!> would well with other code is another matter).
 
+=head1 OTHER WAYS TO DO IT
+
+C<Glib::Utils> C<strerror()> gives a wide char string similar to
+C<POSIX::Wide::strerror()> above if you're using Glib.
+
+Glib also has a C<g_date_strftime>, which is not wrapped as of Perl-Glib
+1.220 giving a utf8 C<strftime> similar to C<POSIX::Wide::strftime> above,
+but only for a date, not a date and time together.
+
 =head1 SEE ALSO
 
-L<POSIX>
-
-L<Glib::Utils>, for a similar C<strerror>.
+L<POSIX>, L<Glib::Utils> (which includes a wide C<strsig>)
 
 =head1 HOME PAGE
 

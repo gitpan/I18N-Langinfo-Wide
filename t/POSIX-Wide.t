@@ -28,7 +28,7 @@ MyTestHelpers::nowarnings();
 
 require POSIX::Wide;
 
-my $want_version = 6;
+my $want_version = 7;
 is ($POSIX::Wide::VERSION, $want_version, 'VERSION variable');
 is (POSIX::Wide->VERSION,  $want_version, 'VERSION class method');
 { ok (eval { POSIX::Wide->VERSION($want_version); 1 },
