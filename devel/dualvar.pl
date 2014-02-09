@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2010, 2011 Kevin Ryde
+# Copyright 2011 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
 #
@@ -19,23 +19,13 @@
 
 use strict;
 use warnings;
-use POSIX::Wide;
+use Scalar::Util;
 
+# use blib "$ENV{HOME}/perl/scalar-list-utils/Scalar-List-Utils-1.23";
 
 {
-  delete $ENV{'LANGUAGE'};
-  require POSIX;
-  print POSIX::setlocale(POSIX::LC_ALL(),'fr_FR'),"\n";
-
-  $! = 4;
-  print $!+0,"\n";
-  print $POSIX::Wide::ERRNO,"\n";
-  print $!+0,"\n";
-  print $POSIX::Wide::ERRNO,"\n";
-
-  print $^E,"\n";
-  print utf8::is_utf8("$^E"),"\n";
-  print $POSIX::Wide::EXTENDED_OS_ERROR,"\n";
-  print utf8::is_utf8("$POSIX::Wide::EXTENDED_OS_ERROR"),"\n";
-  exit 0;
+  my $u = 'x';
+  utf8::upgrade($u);
+  my $e = Scalar::Util::dualvar(0,$u);
+  print $e
 }

@@ -1,5 +1,5 @@
-libi18n-langinfo-wide-perl (7-1) unstable; urgency=low
+libi18n-langinfo-wide-perl (8-0.1) unstable; urgency=low
 
   * Packaged version.
 
- -- Kevin Ryde <user42@zip.com.au>  Thu, 30 Sep 2010 08:22:54 +1000
+ -- Kevin Ryde <user42@zip.com.au>  Sun, 09 Feb 2014 08:57:02 +1100

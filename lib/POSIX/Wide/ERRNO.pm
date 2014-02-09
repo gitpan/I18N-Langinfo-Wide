@@ -1,4 +1,4 @@
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2012, 2014 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
 #
@@ -25,7 +25,7 @@ use Scalar::Util;
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-our $VERSION = 7;
+our $VERSION = 8;
 
 sub TIESCALAR {
   my ($class) = @_;
@@ -42,7 +42,7 @@ BEGIN {
            my $e = Scalar::Util::dualvar(0,$u);
            utf8::is_utf8($e) }) {
     ### dualvar() is utf8
-    eval "#line ".(__LINE__+1)." \"".__FILE__."\"\n" . <<'HERE' or die;
+    eval "\n#line ".(__LINE__+1)." \"".__FILE__."\"\n" . <<'HERE' or die;
       sub FETCH {
         return Scalar::Util::dualvar
                  ($!, I18N::Langinfo::Wide::to_wide("$!"));
@@ -52,7 +52,7 @@ HERE
   } else {
     ### dualvar() is not utf8, using _utf8_on()
     require Encode;
-    eval "#line ".(__LINE__+1)." \"".__FILE__."\"\n" . <<'HERE' or die;
+    eval "\n#line ".(__LINE__+1)." \"".__FILE__."\"\n" . <<'HERE' or die;
       sub FETCH {
         my $e = Scalar::Util::dualvar
                   ($!, I18N::Langinfo::Wide::to_wide("$!"));
@@ -71,3 +71,41 @@ sub STORE {
 
 1;
 __END__
+
+=for stopwords POSIX Ryde Langinfo
+
+=head1 NAME
+
+POSIX::Wide::ERRNO -- an internal part of POSIX::Wide
+
+=head1 DESCRIPTION
+
+This is the tie class used to implement the wide C<$ERRNO> variable in
+C<POSIX::Wide>.  It's not designed for external use.
+
+=head1 SEE ALSO
+
+L<POSIX>, L<perltie>
+
+=head1 HOME PAGE
+
+L<http://user42.tuxfamily.org/i18n-langinfo-wide/index.html>
+
+=head1 LICENSE
+
+I18N-Langinfo-Wide is Copyright 2009, 2010, 2012, 2014 Kevin Ryde
+
+I18N-Langinfo-Wide is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 3, or (at your option) any later
+version.
+
+I18N-Langinfo-Wide is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+more details.
+
+You should have received a copy of the GNU General Public License along with
+I18N-Langinfo-Wide.  If not, see L<http://www.gnu.org/licenses/>.
+
+=cut

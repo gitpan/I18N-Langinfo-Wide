@@ -1,6 +1,6 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
-# Copyright 2010 Kevin Ryde
+# Copyright 2010, 2011, 2012, 2014 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
 #
@@ -21,10 +21,8 @@ use 5.008001;
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
-use lib 'inc';
-use MyMakeMakerExtras;
 
-MyMakeMakerExtras::WriteMakefile
+WriteMakefile
   (NAME         => 'I18N::Langinfo::Wide',
    ABSTRACT     => 'Langinfo and POSIX functions with wide-char strings.',
    VERSION_FROM => 'lib/I18N/Langinfo/Wide.pm',
@@ -36,14 +34,15 @@ MyMakeMakerExtras::WriteMakefile
                     'I18N::Langinfo' => 0,
                    },
    AUTHOR       => 'Kevin Ryde <user42@zip.com.au>',
-   LICENSE      => 'gpl',
+   LICENSE      => 'gpl_3',
    SIGN         => 1,
    MIN_PERL_VERSION => 5.008001,
 
-   META_MERGE
-   => { resources
-        => { homepage
-             => 'http://user42.tuxfamily.org/i18n-langinfo-wide/index.html',
-           },
-      },
+   META_MERGE =>
+   { resources =>
+     { homepage => 'http://user42.tuxfamily.org/i18n-langinfo-wide/index.html',
+       license  => 'http://www.gnu.org/licenses/gpl.html',
+     },
+     no_index => { directory=>['devel'] },
+   },
   );

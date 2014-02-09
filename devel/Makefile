@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2010, 2011 Kevin Ryde
+# Copyright 2009, 2014 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
 #
@@ -17,25 +17,8 @@
 # You should have received a copy of the GNU General Public License along
 # with I18N-Langinfo-Wide.  If not, see <http://www.gnu.org/licenses/>.
 
-use strict;
-use warnings;
-use POSIX::Wide;
 
-
-{
-  delete $ENV{'LANGUAGE'};
-  require POSIX;
-  print POSIX::setlocale(POSIX::LC_ALL(),'fr_FR'),"\n";
-
-  $! = 4;
-  print $!+0,"\n";
-  print $POSIX::Wide::ERRNO,"\n";
-  print $!+0,"\n";
-  print $POSIX::Wide::ERRNO,"\n";
-
-  print $^E,"\n";
-  print utf8::is_utf8("$^E"),"\n";
-  print $POSIX::Wide::EXTENDED_OS_ERROR,"\n";
-  print utf8::is_utf8("$POSIX::Wide::EXTENDED_OS_ERROR"),"\n";
-  exit 0;
-}
+CFLAGS=-Wall
+all: glibc-alt-digits
+	./glibc-alt-digits
+exe-glibc-alt-digits: glibc-alt-digits.c

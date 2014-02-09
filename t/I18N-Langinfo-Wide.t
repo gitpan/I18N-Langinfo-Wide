@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2014 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
 #
@@ -28,7 +28,7 @@ MyTestHelpers::nowarnings();
 
 require I18N::Langinfo::Wide;
 
-my $want_version = 7;
+my $want_version = 8;
 is ($I18N::Langinfo::Wide::VERSION, $want_version, 'VERSION variable');
 is (I18N::Langinfo::Wide->VERSION,  $want_version, 'VERSION class method');
 { ok (eval { I18N::Langinfo::Wide->VERSION($want_version); 1 },

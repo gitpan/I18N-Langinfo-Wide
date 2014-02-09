@@ -1,4 +1,4 @@
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2014 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
 #
@@ -24,7 +24,7 @@ use I18N::Langinfo ();
 # version 2.25 for Encode::Alias recognise "646" on netbsd
 use Encode 2.25;
 
-our $VERSION = 7;
+our $VERSION = 8;
 
 use Exporter;
 our @ISA = ('Exporter');
@@ -90,11 +90,11 @@ sub to_wide {
 1;
 __END__
 
-=for stopwords POSIX charset Eg funcs latin-1 ebcdic I18N-Langinfo-Wide Ryde
+=for stopwords POSIX charset Eg funcs latin-1 ebcdic I18N-Langinfo-Wide Ryde langinfo
 
 =head1 NAME
 
-I18N::Langinfo::Wide -- POSIX functions returning wide-char strings
+I18N::Langinfo::Wide -- langinfo functions returning wide-char strings
 
 =head1 SYNOPSIS
 
@@ -104,13 +104,13 @@ I18N::Langinfo::Wide -- POSIX functions returning wide-char strings
 
 =head1 DESCRIPTION
 
-This little module offers a wide-char C<langinfo>, converting the locale
-charset bytes from C<I18N::Langinfo>.
+This little module offers a C<langinfo()> which is as per L<I18N::Langinfo>
+but returning wide-char strings rather than locale charset bytes.
 
 =head1 EXPORTS
 
-Nothing is exported by default, but C<langinfo> can be imported in usual
-C<Exporter> style.  Eg.
+Nothing is exported by default, but C<langinfo()> can be imported in usual
+L<Exporter> style.  Eg.
 
     use I18N::Langinfo::Wide 'langinfo';
 
@@ -130,10 +130,10 @@ an integer, one of the constants from C<I18N::Langinfo> like C<ABDAY_1>.
     print I18N::Langinfo::Wide::langinfo($what);  # "Sunday"
 
 As of C<I18N::Langinfo> 0.02 (Perl 5.10.1), all the return values are
-character strings.  The underlying C<nl_langinfo> function has some byte
+character strings.  The underlying C<nl_langinfo()> function has some byte
 returns like C<GROUPING>, but they're not available through the Perl
-interface.  The intention is that C<I18N::Langinfo::Wide> would leave the
-byte ones as bytes.
+interface.  The intention would be that C<I18N::Langinfo::Wide> would leave
+the byte ones as bytes.
 
 =item C<$str = I18N::Langinfo::Wide::to_wide ($str)>
 
@@ -145,11 +145,12 @@ If C<$str> is already wide chars then it's returned unchanged.
 
 =head1 BUGS
 
-In the GNU C Library 2.10.1, C<langinfo> on C<ALT_DIGITS> or C<ERA> returns
-only the first digit or first era.  This is a bug in the C library which
-neither C<I18N::Langinfo> nor C<I18N::Langinfo::Wide> attempt to address.
-(C<nl_langinfo> returns nulls C<\0> between the characters or eras, where
-the POSIX spec calls for semicolons.)
+In the GNU C Library 2.10.1 through 2.17, C<langinfo()> on C<ALT_DIGITS> or
+C<ERA> returns only the first digit or first era.  This is a bug in the C
+library which neither C<I18N::Langinfo> nor C<I18N::Langinfo::Wide> attempt
+to address.  (C<nl_langinfo()> returns nulls C<\0> between the characters or
+eras, but the POSIX spec calls for semicolons:
+L<http://www.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap07.html>.)
 
 =head1 SEE ALSO
 
@@ -164,7 +165,7 @@ L<http://user42.tuxfamily.org/i18n-langinfo-wide/index.html>
 
 =head1 LICENSE
 
-I18N-Langinfo-Wide is Copyright 2008, 2009, 2010 Kevin Ryde
+I18N-Langinfo-Wide is Copyright 2008, 2009, 2010, 2011, 2014 Kevin Ryde
 
 I18N-Langinfo-Wide is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the
@@ -177,6 +178,6 @@ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 more details.
 
 You should have received a copy of the GNU General Public License along with
-I18N-Langinfo-Wide.  If not, see <http://www.gnu.org/licenses/>.
+I18N-Langinfo-Wide.  If not, see L<http://www.gnu.org/licenses/>.
 
 =cut

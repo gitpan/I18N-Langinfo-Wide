@@ -8,12 +8,17 @@ debian/rules
 debian/source/format
 debian/watch
 devel/check-categories.pl
+devel/dualvar.pl
 devel/errno-anystring.pl
+devel/exe-glibc-alt-digits.c
+devel/exe-localeconv.c
 devel/filename.pl
 devel/funcs.pl
+devel/langinfo-wide.pl
+devel/Makefile
+devel/posix-wide.pl
 devel/run.pl
 inc/my_pod2html
-inc/MyMakeMakerExtras.pm
 lib/I18N/Langinfo/Wide.pm
 lib/POSIX/Wide.pm
 lib/POSIX/Wide/ERRNO.pm
@@ -26,9 +31,16 @@ SIGNATURE
 t/I18N-Langinfo-Wide.t
 t/MyTestHelpers.pm
 t/POSIX-Wide.t
+xt/0-file-is-part-of.t
 xt/0-META-read.t
+xt/0-no-debug-left-on.t
+xt/0-Test-ConsistentVersion.t
 xt/0-Test-DistManifest.t
 xt/0-Test-Pod.t
 xt/0-Test-Synopsis.t
 xt/0-Test-YAML-Meta.t
-META.yml                                 Module meta-data (added by MakeMaker)
+xtools/my-check-copyright-years.sh
+xtools/my-check-spelling.sh
+xtools/my-deb.sh
+META.yml                                 Module YAML meta-data (added by MakeMaker)
+META.json                                Module JSON meta-data (added by MakeMaker)

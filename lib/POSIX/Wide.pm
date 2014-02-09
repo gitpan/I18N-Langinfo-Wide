@@ -1,4 +1,4 @@
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2014 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
 #
@@ -15,6 +15,17 @@
 # You should have received a copy of the GNU General Public License along
 # with I18N-Langinfo-Wide.  If not, see <http://www.gnu.org/licenses/>.
 
+
+# Possible funcs:
+#   asctime()
+#   ctime()
+#       Believe always ascii day/month, or at least that's what glibc gives.
+#
+# Different:
+#   strcoll()
+#   strxfrm()
+
+
 package POSIX::Wide;
 use 5.008;
 use strict;
@@ -23,13 +34,12 @@ use POSIX ();
 use Encode;
 use I18N::Langinfo::Wide 'to_wide';
 
-our $VERSION = 7;
+our $VERSION = 8;
 
 use Exporter;
 our @ISA = ('Exporter');
 our @EXPORT_OK = qw(localeconv perror strerror strftime tzname
                     $ERRNO $EXTENDED_OS_ERROR);
-
 # not yet ...
 # our %EXPORT_TAGS = (all => \@EXPORT_OK);
 
@@ -40,30 +50,25 @@ use POSIX::Wide::EXTENDED_OS_ERROR;
 tie (our $EXTENDED_OS_ERROR, 'POSIX::Wide::EXTENDED_OS_ERROR');
 
 
-# Possible funcs:
-#   asctime
-#   ctime
-#       Believe always ascii day/month, or at least that's what glibc gives.
-#
-# Different:
-#   strcoll
-#   strxfrm
-
-our @_localeconv_string_fields = (qw(decimal_point
-                                     thousands_sep
-                                     int_curr_symbol
-                                     currency_symbol
-                                     mon_decimal_point
-                                     mon_thousands_sep
-                                     positive_sign
-                                     negative_sign));
+our @LOCALECONV_STRING_FIELDS = (qw(decimal_point
+                                    thousands_sep
+                                    int_curr_symbol
+                                    currency_symbol
+                                    mon_decimal_point
+                                    mon_thousands_sep
+                                    positive_sign
+                                    negative_sign));
 
 # POSIX.xs of perl 5.10.1 has mon_thousands_sep conditionalized, so allow
-# for it and maybe other fields to not exist
+# for it and maybe other fields to not exist.
+#
+# POSIX.xs omits fields which are empty strings "", so for example when
+# positive_sign is an empty string (which is usual in an English locale)
+# there's no such field in the POSIX::localeconv() return.
 #
 sub localeconv {
   my $l = POSIX::localeconv();
-  foreach my $key (@_localeconv_string_fields) {
+  foreach my $key (@LOCALECONV_STRING_FIELDS) {
     if (exists $l->{$key}) {
       $l->{$key} = to_wide($l->{$key});
     }
@@ -98,7 +103,7 @@ sub tzname {
 1;
 __END__
 
-=for stopwords POSIX charset Eg funcs hashref errno MacOS VMS I18N-Langinfo-Wide Ryde
+=for stopwords POSIX charset Eg funcs hashref errno MacOS VMS I18N-Langinfo-Wide Ryde utf8
 
 =head1 NAME
 
@@ -167,9 +172,9 @@ Return the C<tzname[]> strings for standard time and daylight savings time
 as wide char strings.
 
 The POSIX spec is that these should only have characters from the "portable
-character set", so normally the bytes of plain C<POSIX::tzname> should
-suffice.  C<POSIX::Wide::tzname> can be used if someone might get creative
-with a C<TZ> setting.
+character set", so normally the plain bytes of C<POSIX::tzname> should
+suffice.  C<POSIX::Wide::tzname> can be used if someone might be creative in
+their C<TZ> setting.
 
 =back
 
@@ -181,15 +186,15 @@ with a C<TZ> setting.
 
 =item C<$str = "$POSIX::Wide::ERRNO">
 
-A magic dual-value variable which is C<$!> but giving the string form as
+A magic dual string+number variable like C<$!> but giving the string form as
 wide-chars (see L<perlvar/$ERRNO>).
 
 =item C<$num = $POSIX::Wide::EXTENDED_OS_ERROR + 0>
 
 =item C<$str = "$POSIX::Wide::EXTENDED_OS_ERROR">
 
-A magic dual-value variable which is C<$^E> but giving the string form as
-wide-chars (see L<perlvar/$EXTENDED_OS_ERROR>).
+A magic dual string+number variable like C<$^E> but giving the string form
+as wide-chars (see L<perlvar/$EXTENDED_OS_ERROR>).
 
 The current implementation assumes C<$^E> is locale bytes (if it isn't
 already wide).  This is true of POSIX but not absolutely sure for MacOS and
@@ -197,29 +202,53 @@ VMS.
 
 =back
 
+=head1 CONFIGURATION
+
+=over 4
+
+=item C<@LOCALECONV_STRING_FIELDS>
+
+An array of the field names from C<localeconv()> which are converted to
+wide-char strings, if the fields exist.  Currently these are
+
+    decimal_point
+    thousands_sep
+    int_curr_symbol
+    currency_symbol
+    mon_decimal_point
+    mon_thousands_sep
+    positive_sign
+    negative_sign
+
+The C<POSIX> module omits fields which are empty strings from its return,
+and apparently there's no C<mon_thousands_sep> in some early DJGPP.
+
+=back
+
 =head1 WITH C<Errno::AnyString>
 
-Custom error strings set into C<$!> by C<Errno::AnyString> work with all of
-C<strerror>, C<perror> and C<$ERRNO> above, and custom error numbers
-registered with C<Errno::AnyString> can be accessed with C<strerror> too.
+Custom error strings set into C<$!> by L<Errno::AnyString> work with all of
+C<strerror()>, C<perror()> and C<$ERRNO> above.  Custom error numbers
+registered with C<Errno::AnyString> can be turned into strings with
+C<strerror()> too.
 
-If you use non-ASCII in such a string then it should be locale bytes the
-same as normal C<$!> strings.  If C<$!> is a wide character string then
-<POSIX::Wide> will return that unchanged (though whether wide strings from
-C<$!> would well with other code is another matter).
+Any non-ASCII in such a string should be locale bytes the same as normal
+C<$!> strings.  If C<$!> is a wide character string then <POSIX::Wide> will
+return it unchanged.  Whether wide strings from C<$!> would well with other
+code is another matter.
 
 =head1 OTHER WAYS TO DO IT
 
 C<Glib::Utils> C<strerror()> gives a wide char string similar to
 C<POSIX::Wide::strerror()> above if you're using Glib.
 
-Glib also has a C<g_date_strftime>, which is not wrapped as of Perl-Glib
-1.220 giving a utf8 C<strftime> similar to C<POSIX::Wide::strftime> above,
-but only for a date, not a date and time together.
+Glib also has a C<g_date_strftime()>, which is not wrapped as of Perl-Glib
+1.220, giving a utf8 C<strftime()> similar to C<POSIX::Wide::strftime()>
+above, but only for a date, not a date and time together.
 
 =head1 SEE ALSO
 
-L<POSIX>, L<Glib::Utils> (which includes a wide C<strsig>)
+L<POSIX>, L<Glib::Utils> (which includes a wide C<strsig()>)
 
 =head1 HOME PAGE
 
@@ -227,7 +256,7 @@ L<http://user42.tuxfamily.org/i18n-langinfo-wide/index.html>
 
 =head1 LICENSE
 
-I18N-Langinfo-Wide is Copyright 2008, 2009, 2010 Kevin Ryde
+I18N-Langinfo-Wide is Copyright 2008, 2009, 2010, 2011, 2014 Kevin Ryde
 
 I18N-Langinfo-Wide is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the
@@ -240,6 +269,6 @@ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 more details.
 
 You should have received a copy of the GNU General Public License along with
-I18N-Langinfo-Wide.  If not, see <http://www.gnu.org/licenses/>.
+I18N-Langinfo-Wide.  If not, see L<http://www.gnu.org/licenses/>.
 
 =cut

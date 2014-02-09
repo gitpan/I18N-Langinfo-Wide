@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2014 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
 #
@@ -20,7 +20,7 @@
 use 5.008;
 use strict;
 use warnings;
-use Test::More tests => 50;
+use Test::More tests => 54;
 
 use lib 't';
 use MyTestHelpers;
@@ -28,7 +28,7 @@ MyTestHelpers::nowarnings();
 
 require POSIX::Wide;
 
-my $want_version = 7;
+my $want_version = 8;
 is ($POSIX::Wide::VERSION, $want_version, 'VERSION variable');
 is (POSIX::Wide->VERSION,  $want_version, 'VERSION class method');
 { ok (eval { POSIX::Wide->VERSION($want_version); 1 },
@@ -61,12 +61,10 @@ sub my_printable_string {
 #------------------------------------------------------------------------------
 # localeconv()
 
-my %localeconv_is_string = (decimal_point     => 1,
-                            currency_symbol   => 1,
-                            int_curr_symbol   => 1,
-                            mon_decimal_point => 1,
-                            mon_thousands_sep => 1,
-                            negative_sign     => 1);
+my %localeconv_is_string;
+foreach my $field (@POSIX::Wide::LOCALECONV_STRING_FIELDS) {
+  $localeconv_is_string{$field} = 1;
+}
 my %localeconv_is_binary = (frac_digits     => 1, # number
                             int_frac_digits => 1, # number
                             mon_grouping    => 1, # numbers
@@ -90,7 +88,7 @@ my %localeconv_is_binary = (frac_digits     => 1, # number
 
     if (! $localeconv_is_string{$key}
         && ! $localeconv_is_binary{$key}) {
-      diag "oops, key $key unrecognised (will assume binary)"
+      diag "oops, type of key \"$key\" unrecognised (will assume binary)"
     }
 
     if ($localeconv_is_string{$key}) {
@@ -207,8 +205,14 @@ my %localeconv_is_binary = (frac_digits     => 1, # number
   $! = POSIX::EBADF();
   my $num = $POSIX::Wide::ERRNO + 0;
   my $str = "$POSIX::Wide::ERRNO";
+  my $num2 = $POSIX::Wide::ERRNO + 0;
+  my $str2 = "$POSIX::Wide::ERRNO";
+
   is ($num, POSIX::EBADF(), 'ERRNO number EBADF');
   ok (utf8::is_utf8($str),  'ERRNO string is_utf8');
+
+  is ($num2, POSIX::EBADF(), 'ERRNO second read, number EBADF');
+  ok (utf8::is_utf8($str2),  'ERRNO second read, string is_utf8');
 
  SKIP: {
     (defined &utf8::valid)
@@ -226,8 +230,14 @@ my %localeconv_is_binary = (frac_digits     => 1, # number
   my $want_str = "$^E";
   my $got_num = $POSIX::Wide::EXTENDED_OS_ERROR + 0;
   my $got_str = "$POSIX::Wide::EXTENDED_OS_ERROR";
+  my $got_num2 = $POSIX::Wide::EXTENDED_OS_ERROR + 0;
+  my $got_str2 = "$POSIX::Wide::EXTENDED_OS_ERROR";
+
   is ($got_num, $want_num,     'EXTENDED_OS_ERROR number');
   ok (utf8::is_utf8($got_str), 'EXTENDED_OS_ERROR string is_utf8');
+
+  is ($got_num2, $want_num,     'EXTENDED_OS_ERROR second, number');
+  ok (utf8::is_utf8($got_str2), 'EXTENDED_OS_ERROR second, string is_utf8');
 
  SKIP: {
     (defined &utf8::valid)
