@@ -17,6 +17,9 @@ with I18N-Langinfo-Wide.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
+Version 9, October 2014
+    - split the POSIX parts out to its own dist
+
 Version 8, February 2014
     - POSIX::Wide new @LOCALECONV_STRING_FIELDS
     - tests thousands_sep is a string field, as reported by Karl

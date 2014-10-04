@@ -24,7 +24,7 @@ use I18N::Langinfo ();
 # version 2.25 for Encode::Alias recognise "646" on netbsd
 use Encode 2.25;
 
-our $VERSION = 8;
+our $VERSION = 9;
 
 use Exporter;
 our @ISA = ('Exporter');
@@ -86,7 +86,6 @@ sub to_wide {
                          $str, Encode::FB_CROAK());
 }
 
-
 1;
 __END__
 
@@ -105,7 +104,10 @@ I18N::Langinfo::Wide -- langinfo functions returning wide-char strings
 =head1 DESCRIPTION
 
 This little module offers a C<langinfo()> which is as per L<I18N::Langinfo>
-but returning wide-char strings rather than locale charset bytes.
+but returns wide-char strings rather than locale charset bytes.
+
+C<I18N::Langinfo> uses C<nl_langinfo()> and so may be available only on
+Unix/POSIX systems, depending how much the C library might emulate.
 
 =head1 EXPORTS
 
@@ -114,8 +116,8 @@ L<Exporter> style.  Eg.
 
     use I18N::Langinfo::Wide 'langinfo';
 
-There's no C<:all> tag yet, as not sure if it'd be better to import just the
-new funcs, or everything from C<I18N::Langinfo> too.
+There's no C<:all> tag, as not sure if it'd be better to import just the new
+funcs, or everything from C<I18N::Langinfo> too.
 
 =head1 FUNCTIONS
 
@@ -155,9 +157,6 @@ L<http://www.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap07.html>.)
 =head1 SEE ALSO
 
 L<I18N::Langinfo>, L<POSIX::Wide>
-
-L<utf8>, for C<utf8::upgrade> which is similar to C<to_wide> but always
-takes byte input to be latin-1 or ebcdic.
 
 =head1 HOME PAGE
 

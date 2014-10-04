@@ -24,7 +24,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile
   (NAME         => 'I18N::Langinfo::Wide',
-   ABSTRACT     => 'Langinfo and POSIX functions with wide-char strings.',
+   ABSTRACT     => 'Langinfo function returning wide-char strings.',
    VERSION_FROM => 'lib/I18N/Langinfo/Wide.pm',
    PREREQ_PM    => {
                     # version 2.25 for Encode::Alias recognise "646" on netbsd
@@ -33,7 +33,7 @@ WriteMakefile
                     # perhaps not supplied by default on msdos ...
                     'I18N::Langinfo' => 0,
                    },
-   AUTHOR       => 'Kevin Ryde <user42@zip.com.au>',
+   AUTHOR       => 'Kevin Ryde <user42_kevin@yahoo.com.au>',
    LICENSE      => 'gpl_3',
    SIGN         => 1,
    MIN_PERL_VERSION => 5.008001,
@@ -43,6 +43,6 @@ WriteMakefile
      { homepage => 'http://user42.tuxfamily.org/i18n-langinfo-wide/index.html',
        license  => 'http://www.gnu.org/licenses/gpl.html',
      },
-     no_index => { directory=>['devel'] },
+     no_index => { directory=>['devel','xt'] },
    },
   );

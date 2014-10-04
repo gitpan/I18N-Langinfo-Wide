@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2010 Kevin Ryde
+# Copyright 2010, 2014 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
 #
@@ -21,9 +21,8 @@ use strict;
 use warnings;
 
 
-
-
 {
+  # cf /etc/locale.gen or locale -a
   $! = 9;
   print $!,"\n";
   require POSIX;
@@ -32,8 +31,8 @@ use warnings;
   delete $ENV{'LC_MESSAGES'};
   delete $ENV{'LANG'};
 
-  print POSIX::setlocale(POSIX::LC_ALL(),'fr_FR'),"\n";
-  print POSIX::setlocale(POSIX::LC_MESSAGES(),'fr_FR'),"\n";
+  print POSIX::setlocale(POSIX::LC_ALL(),'de_DE'),"\n";
+  print POSIX::setlocale(POSIX::LC_MESSAGES(),'de_DE'),"\n";
   print POSIX::setlocale(POSIX::LC_MESSAGES()),"\n";
 
 #   foreach my $i (1 .. 100) {
@@ -73,16 +72,6 @@ use warnings;
 }
 
 {
-  require POSIX;
-  $ENV{'TZ'} = 'EST+10EDT';
-  POSIX::tzset();
-  print "scalar ", scalar(POSIX::tzname()), "\n";
-  print "list   ", POSIX::tzname(), "\n";
-  exit 0;
-}
-
-
-{
   require Encode;
   foreach (Encode->encodings(':all')) { print; print "\n"; }
 
@@ -92,24 +81,6 @@ use warnings;
 
   print "alias: ", Encode::resolve_alias("646"), "\n";
 
-  exit 0;
-}
-{
-  require POSIX;
-  print "perror defined: ",defined(&perror)?"yes":"no","\n";
-  print "can('perror'): ",POSIX->can('perror')?"yes":"no","\n";
-  $! = 3;
-  POSIX::perror();
-}
-
-{
-  print "strcspn defined: ",defined(&strcspn)?"yes":"no","\n";
-  print "can('strcspn'): ",POSIX->can('strcspn')?"yes":"no","\n";
-  POSIX::strcspn();
-}
-
-{
-  print "TZNAME_MAX is ",POSIX::sysconf(POSIX::_SC_TZNAME_MAX()),"\n";
   exit 0;
 }
 

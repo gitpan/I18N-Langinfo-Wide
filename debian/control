@@ -1,4 +1,4 @@
-# Copyright 2010, 2011, 2012, 2013 Kevin Ryde
+# Copyright 2010, 2011, 2012, 2013, 2014 Kevin Ryde
 
 # This file is part of I18N-Langinfo-Wide.
 #
@@ -24,15 +24,15 @@ Source: libi18n-langinfo-wide-perl
 Section: perl
 Priority: optional
 Build-Depends: cdbs, debhelper (>= 5)
-Maintainer: Kevin Ryde <user42@zip.com.au>
+Maintainer: Kevin Ryde <user42_kevin@yahoo.com.au>
 Standards-Version: 3.9.5
 Homepage: http://user42.tuxfamily.org/i18n-langinfo-wide/index.html
-Bugs: mailto:user42@zip.com.au
+Bugs: mailto:user42_kevin@yahoo.com.au
 
 Package: libi18n-langinfo-wide-perl
 Architecture: all
 Depends: perl (>= 5.8.1), ${perl:Depends}, ${misc:Depends}
-Description: Langinfo and POSIX functions with wide-char strings.
- This is variations of the I18N::Langinfo and POSIX module functions
- taking and returning Perl wide-char strings, rather than locale
- charset bytes like the plain functions do.
+Description: Langinfo functions with wide-char strings
+ This is a variation of the I18N::Langinfo module returning Perl
+ wide-char strings, rather than locale charset bytes like the plain
+ langinfo() function does.

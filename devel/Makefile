@@ -19,6 +19,6 @@
 
 
 CFLAGS=-Wall
-all: glibc-alt-digits
-	./glibc-alt-digits
-exe-glibc-alt-digits: glibc-alt-digits.c
+all: exe-glibc-alt-digits
+	./exe-glibc-alt-digits
+exe-glibc-alt-digits: exe-glibc-alt-digits.c

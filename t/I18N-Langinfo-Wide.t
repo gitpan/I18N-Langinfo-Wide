@@ -28,7 +28,7 @@ MyTestHelpers::nowarnings();
 
 require I18N::Langinfo::Wide;
 
-my $want_version = 8;
+my $want_version = 9;
 is ($I18N::Langinfo::Wide::VERSION, $want_version, 'VERSION variable');
 is (I18N::Langinfo::Wide->VERSION,  $want_version, 'VERSION class method');
 { ok (eval { I18N::Langinfo::Wide->VERSION($want_version); 1 },
